@@ -88,48 +88,48 @@ public class InputsTest {
 		assertEquals(3.9f, sigma, 0);
 	}
 
-//	/** Tests two inputs, no configuration. */
-//	@Test
-//	public void testTwoInputs() {
-//		setExpected(new HashMap<String, Object>() {{
-//			put("name", "Caesar");
-//			put("age", 55);
-//		}});
-//		Inputs inputs = new Inputs(context);
-//		inputs.getInfo().setName("testTwoInputs");//TEMP
-//		inputs.addInput("name", String.class);
-//		inputs.addInput("age", Integer.class);
-//		Map<String, Object> values = inputs.harvest();
-//		String name = (String) values.get("name");
-//		int age = (Integer) values.get("age");
-//		assertEquals("Chuckles", name);
-//		assertEquals(37, age);
-//	}
-//
-//	/** Tests inputs with configuration. */
-//	@Test
-//	public void testWithConfiguration() {
-//		setExpected(new HashMap<String, Object>() {{
-//			put("word", "brown");
-//			put("opacity", 0.8);
-//		}});
-//		Inputs inputs = new Inputs(context);
-//		inputs.getInfo().setName("testWithConfiguration");//TEMP
-//		MutableModuleItem<String> wordInput = inputs.addInput("word", String.class);
-//		wordInput.setLabel("Favorite word");
-//		wordInput.setChoices(Arrays.asList("quick", "brown", "fox"));
-//		wordInput.setDefaultValue("fox");
-//		MutableModuleItem<Double> opacityInput = inputs.addInput("opacity", Double.class);
-//		opacityInput.setMinimumValue(0.0);
-//		opacityInput.setMaximumValue(1.0);
-//		opacityInput.setDefaultValue(0.5);
-//		opacityInput.setWidgetStyle(NumberWidget.SCROLL_BAR_STYLE);
-//		inputs.harvest();
-//		String word = wordInput.getValue(inputs);
-//		double opacity = opacityInput.getValue(inputs);
-//		assertEquals("brown", word);
-//		assertEquals(0.8, opacity, 0);
-//	}
+	/** Tests two inputs, no configuration. */
+	@Test
+	public void testTwoInputs() {
+		setExpected(new HashMap<String, Object>() {{
+			put("name", "Chuckles");
+			put("age", 37);
+		}});
+		Inputs inputs = new Inputs(context);
+		inputs.getInfo().setName("testTwoInputs");//TEMP
+		inputs.addInput("name", String.class);
+		inputs.addInput("age", Integer.class);
+		Map<String, Object> values = inputs.harvest();
+		String name = (String) values.get("name");
+		int age = (Integer) values.get("age");
+		assertEquals("Chuckles", name);
+		assertEquals(37, age);
+	}
+
+	/** Tests inputs with configuration. */
+	@Test
+	public void testWithConfiguration() {
+		setExpected(new HashMap<String, Object>() {{
+			put("word", "brown");
+			put("opacity", 0.8);
+		}});
+		Inputs inputs = new Inputs(context);
+		inputs.getInfo().setName("testWithConfiguration");//TEMP
+		MutableModuleItem<String> wordInput = inputs.addInput("word", String.class);
+		wordInput.setLabel("Favorite word");
+		wordInput.setChoices(Arrays.asList("quick", "brown", "fox"));
+		wordInput.setDefaultValue("fox");
+		MutableModuleItem<Double> opacityInput = inputs.addInput("opacity", Double.class);
+		opacityInput.setMinimumValue(0.0);
+		opacityInput.setMaximumValue(1.0);
+		opacityInput.setDefaultValue(0.5);
+		opacityInput.setWidgetStyle(NumberWidget.SCROLL_BAR_STYLE);
+		inputs.harvest();
+		String word = wordInput.getValue(inputs);
+		double opacity = opacityInput.getValue(inputs);
+		assertEquals("brown", word);
+		assertEquals(0.8, opacity, 0);
+	}
 
 	public void setExpected(final Map<String, Object> expected) {
 		final PluginInfo<PreprocessorPlugin> info =
@@ -139,7 +139,6 @@ public class InputsTest {
 			@Override
 			public PreprocessorPlugin createInstance() throws InstantiableException {
 				final PreprocessorPlugin pp = super.createInstance();
-				System.out.println(pp + ": injecting " + expected);
 				((MockInputHarvester) pp).setExpected(expected);
 				return pp;
 			}
@@ -151,13 +150,11 @@ public class InputsTest {
 	public static class MockInputHarvester extends AbstractPreprocessorPlugin {
 		private Map<String, Object> expected;
 		public void setExpected(final Map<String, Object> expected) {
-			System.out.println(this + ": setExpected: " + expected);
 			this.expected = expected;
 		}
 
 		@Override
 		public void process(final Module module) {
-			System.out.println("----> " + this + ": processing module: " + module.getInfo().getName());
 			for (final ModuleItem<?> input : module.getInfo().inputs()) {
 				if (module.isInputResolved(input.getName())) continue;
 				final String name = input.getName();
