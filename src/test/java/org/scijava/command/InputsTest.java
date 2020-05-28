@@ -67,8 +67,7 @@ public class InputsTest {
 	@Before
 	public void setUp() {
 		context = new Context();
-		context.service(PluginService.class).addPlugin(//
-			PluginInfo.create(MockInputHarvester.class, PreprocessorPlugin.class));
+		context.service(PluginService.class);
 	}
 
 	@After
@@ -80,13 +79,13 @@ public class InputsTest {
 	@Test
 	public void testSingleInput() {
 		setExpected(new HashMap<String, Object>() {{
-			put("sigma", 3.9);
+			put("sigma", 3.9f);
 		}});
 		Inputs inputs = new Inputs(context);
 		inputs.getInfo().setName("testSingleInput");//TEMP
 		inputs.addInput("sigma", Float.class);
-		float sigma = (Float) inputs.harvest().get("float");
-		assertEquals(3.9, sigma, 0);
+		float sigma = (Float) inputs.harvest().get("sigma");
+		assertEquals(3.9f, sigma, 0);
 	}
 
 //	/** Tests two inputs, no configuration. */
